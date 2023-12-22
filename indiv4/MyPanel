@@ -1,0 +1,94 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class MyPanel extends JPanel {
+    TeacherList teacherList = new TeacherList();
+    JLabel l1,l2,l3;
+    JTextField f1,f2,f3,f4,f5,f6;
+    JTextArea a1;
+    JButton b1,b2,b3,b4,b5;
+
+    MyPanel(){
+        l1 = new JLabel("Имя"); l2 = new JLabel("Фамилия");l3 = new JLabel("Предмет");
+
+        l1.setForeground(Color.white); l2.setForeground(Color.white);l3.setForeground(Color.white);
+
+        f1 = new JTextField(13); f2 = new JTextField(13);f3 = new JTextField(13);
+        a1 = new JTextArea();
+
+        add(l1); add(f1); add(l2); add(f2); add(l3);add(f3);
+        b1 = new JButton("Добавить");
+        add(b1);
+        b1.setBackground(Color.GREEN);
+        MyListener listener = new MyListener();
+        b1.addActionListener(listener);
+        b2 = new JButton("Удалить");
+        add(b2);
+        DeleteListener deleteListener = new DeleteListener();
+        b2.addActionListener(deleteListener);
+        f6 = new JTextField(10);
+        add(f6);
+        b2.setBackground(Color.RED);
+
+        b3 = new JButton("Отсортировать по имени");
+        add(b3);
+        SortByName nameSort = new SortByName();
+        b3.addActionListener(nameSort);
+
+        b4 = new JButton("Отсортировать по фамилии");
+        add(b4);
+        SortBySurname surnameSort = new SortBySurname();
+        b4.addActionListener(surnameSort);
+
+        b5 = new JButton("Отсортировать по предмету");
+        add(b5);
+        SortBySubject subjectSort = new SortBySubject();
+        b5.addActionListener(subjectSort);
+
+        add(a1);
+        a1.setColumns(38);
+        a1.setRows(0);
+        a1.setForeground(Color.WHITE);
+        a1.setBackground(Color.BLACK);
+        Font f = new Font("Calibri",Font.BOLD,20);
+        a1.setFont(f);
+    }
+
+    class SortByName implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            teacherList.sortByName();
+            a1.setText(teacherList.getTeacherList());
+        }
+    }
+    class SortBySurname implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            teacherList.sortBySurname();
+            a1.setText(teacherList.getTeacherList());
+        }
+    }
+    class SortBySubject implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            teacherList.sortBySubject();
+            a1.setText(teacherList.getTeacherList());
+        }
+    }
+    class DeleteListener implements ActionListener{
+        public void actionPerformed(ActionEvent e) {
+            String surname = f6.getText();
+            teacherList.deleteTeacher(surname);
+            a1.setText(teacherList.getTeacherList());
+        }
+    }
+    class MyListener implements ActionListener{
+        public void actionPerformed(ActionEvent e) {
+            String s1 = f1.getText();
+            String s2 = f2.getText();
+            String s3 = f3.getText();
+            Teacher teacher = new Teacher(s1,s2,s3);
+            teacherList.addTeacher(teacher);
+            a1.setText(teacherList.getTeacherList());
+        }
+    }
+}
